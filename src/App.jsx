@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles/_index.scss";
+import "./assets/sass/_index.scss";
 import "react-toggle/style.css";
 
 import {DarkToggle} from "./components/themes/DarkToggle";

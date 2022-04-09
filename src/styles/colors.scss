@@ -1,18 +1,17 @@
-$mint: #14ad8c;
-$mintLight: #dcf7f4;
+$scarlet: #C84C44;
 $royalPurple: #52388f;
 $white: #fff;
 
 body {
   --foregroundPrimary: #222;
-  --foregroundSecondary: #{$mint};
+  --foregroundSecondary: #{$scarlet};
   --backgroundPrimary: #{$white};
-  --backgroundSecondary: #{$mintLight};
+  --backgroundSecondary: #{$white};
 
   @include whenDark {
     --foregroundPrimary: #d8d8d8;
-    --foregroundSecondary: #{$mint};
+    --foregroundSecondary: #{$scarlet};
     --backgroundPrimary: #222;
-    --backgroundSecondary: #{darken($royalPurple, 30%)};  
+    --backgroundSecondary: #222;  
   }
 }

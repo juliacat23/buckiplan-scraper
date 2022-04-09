@@ -7,7 +7,6 @@ import {DarkToggle} from "./components/themes/DarkToggle";
 export default function App() {
     return (
       <>
-  
         <DarkToggle />
       </>
     );

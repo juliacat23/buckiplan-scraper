@@ -1,0 +1,18 @@
+.Button {
+    background: $royalPurple;
+    color: $white;
+    border: none;
+    font-size: 1rem;
+    margin: 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: box-shadow 0.4s;
+  
+    &:hover {
+      box-shadow: 0 2px 20px rgba($royalPurple, 0.7);
+  
+      @include whenDark {
+        background: lighten($royalPurple, 10%);
+      }
+    }
+  }

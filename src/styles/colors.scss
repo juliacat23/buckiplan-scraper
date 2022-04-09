@@ -1,0 +1,18 @@
+$mint: #14ad8c;
+$mintLight: #dcf7f4;
+$royalPurple: #52388f;
+$white: #fff;
+
+body {
+  --foregroundPrimary: #222;
+  --foregroundSecondary: #{$mint};
+  --backgroundPrimary: #{$white};
+  --backgroundSecondary: #{$mintLight};
+
+  @include whenDark {
+    --foregroundPrimary: #d8d8d8;
+    --foregroundSecondary: #{$mint};
+    --backgroundPrimary: #222;
+    --backgroundSecondary: #{darken($royalPurple, 30%)};  
+  }
+}

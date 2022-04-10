@@ -48,7 +48,12 @@
     },
     "react-dotenv": {
         "whitelist": [
-            "API_URL"
+            "APIKEY",
+            "AUTHDOMAIN",
+            "DATABASEURL",
+            "PROJECTID",
+            "MESSAGINGSENDERID",
+            "APPID"
         ]
     }
 }

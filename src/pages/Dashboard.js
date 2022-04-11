@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom'; // migrate from Redirect to Migrate in React v6
 
 import { UserContext } from '../providers/userProvider';
 import { logOut } from '../services/firebase';
@@ -14,7 +14,7 @@ export default function Dashboard() {
         }
     }, [user]);
     if (redirect) {
-        return <Redirect to={redirect} />;
+        return <Navigate to={redirect} />;
     }
 
     return (

@@ -13,3 +13,16 @@ firebase.initializeApp({
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_APP_ID,
 });
+
+export const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+export const signInWithGoogle = () => {
+    auth.signInWithPopup(googleProvider)
+        .then((res) => {
+            console.log(res.user);
+        })
+        .catch((error) => {
+            console.log(error.message);
+        });
+};

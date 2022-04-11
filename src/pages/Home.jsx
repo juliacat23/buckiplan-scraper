@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import {LoginButton} from '../LoginButton';
+import React from 'react';
+// import Login from '../components/LoginButton';
 
-class Login extends React.Component {
+class Home extends React.Component {
     render() {
-        return(
+        return (
             <React.Fragment>
                 <div className='landing top-sec'>
                     <div className='container p-0 m-0'>
@@ -17,13 +17,18 @@ class Login extends React.Component {
                                 </div>
                                 <div className='row no-gutters top-section'>
                                     <div className='plan-subhead'>
-                                        <div>Introducting the newest and easiest</div>
+                                        <div>
+                                            Introducting the newest and easiest
+                                        </div>
                                         <div>way to plan courses at OSU</div>
                                     </div>
                                 </div>
                                 <div className='row justify-content-center'>
                                     <div className='col top-section'>
-                                        <button className='email-button email-button--top' variant='primary'>
+                                        <button
+                                            className='email-button email-button--top'
+                                            variant='primary'
+                                        >
                                             Get Started
                                         </button>
                                     </div>
@@ -33,8 +38,8 @@ class Login extends React.Component {
                     </div>
                 </div>
             </React.Fragment>
-        )
+        );
     }
 }
 
-export default Login
+export default Home;

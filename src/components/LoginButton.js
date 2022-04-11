@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { signInWithGoogle } from '../services/firebase';
-import { UserContext } from '../providers/userProvider';
+import { UserContext } from '../providers/UserProvider';
 
 export default function Login() {
     const user = useContext(UserContext);

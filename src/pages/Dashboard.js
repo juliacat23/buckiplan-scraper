@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom'; // migrate from Redirect to Migrate in React v6
 
-import { UserContext } from '../providers/userProvider';
+import { UserContext } from '../providers/UserProvider';
 import { logOut } from '../services/firebase';
 
 export default function Dashboard() {

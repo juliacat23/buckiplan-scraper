@@ -33,6 +33,13 @@
             "react-app/jest"
         ]
     },
+    "resolve": {
+        "fallback": {
+            "fs": false,
+            "os": false,
+            "path": false
+        }
+    },
     "browserslist": {
         "production": [
             ">0.2%",

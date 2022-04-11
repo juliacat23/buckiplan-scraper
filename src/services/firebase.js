@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/compat/app'; // fix to import error
 import 'firebase/auth';
 import 'firebase/firestore';
 
-dotenv.config();
 
 firebase.initializeApp({
     apiKey: process.env.REACT_APP_API_KEY,

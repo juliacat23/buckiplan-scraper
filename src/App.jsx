@@ -1,23 +1,49 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import React, { Component } from 'react';
+import withFirebaseAuth from 'react-with-firebase-auth'
+import firebase from 'firebase/compat/app'; // fix to import error
+import 'firebase/auth';
+import firebaseConfig from './config/firebaseConfig';
+import logo from './logo.svg';
+import './App.css';
 
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-import UserContext from './providers/UserProvider';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
-import "./assets/sass/App.scss";
+class App extends Component {
+  render() {
+    const {
+      user,
+      signOut,
+      signInWithGoogle,
+    } = this.props;
 
-// import {DarkToggle} from "./components/themes/DarkToggle";
-
-export default function App() {
     return (
-      <UserContext>
-        <Router>
-        <Routes>
-          <Route exact path='/' element={<Home />} />
-          <Route exact path='/dasboard' element={<Dashboard />} />
-        </Routes>
-      </Router>
-      </UserContext>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          {
+            user
+              ? <p>Hello, {user.displayName}</p>
+              : <p>Please sign in.</p>
+          }
+
+          {
+            user
+              ? <button onClick={signOut}>Sign out</button>
+              : <button onClick={signInWithGoogle}>Sign in with Google</button>
+          }
+        </header>
+      </div>
     );
   }
+}
+
+const firebaseAppAuth = firebaseApp.auth();
+
+const providers = {
+  googleProvider: new firebase.auth.GoogleAuthProvider(),
+};
+
+export default withFirebaseAuth({
+  providers,
+  firebaseAppAuth,
+})(App);

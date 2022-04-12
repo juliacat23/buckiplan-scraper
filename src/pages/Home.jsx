@@ -1,5 +1,4 @@
 import React from 'react';
-// import Login from '../components/LoginButton';
 
 class Home extends React.Component {
     render() {
@@ -25,12 +24,6 @@ class Home extends React.Component {
                                 </div>
                                 <div className='row justify-content-center'>
                                     <div className='col top-section'>
-                                        <button
-                                            className='email-button email-button--top'
-                                            variant='primary'
-                                        >
-                                            Get Started
-                                        </button>
                                     </div>
                                 </div>
                             </div>

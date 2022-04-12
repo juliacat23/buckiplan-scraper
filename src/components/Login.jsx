@@ -4,7 +4,8 @@ import { Navigate } from 'react-router-dom';
 import { signInWithGoogle } from '../services/firebase';
 import { UserContext } from '../providers/UserProvider';
 
-export default function Login() {
+
+const Login = () => {
     const user = useContext(UserContext);
     const [redirect, setredirect] = useState(null);
 
@@ -17,13 +18,14 @@ export default function Login() {
         return <Navigate to={redirect} />;
     }
     return (
-        <div className='login-buttons'>
-            <button
-                className='email-button email-button--to'
-                onClick={signInWithGoogle}
-            >
-                GET STARTED
-            </button>
-        </div>
+        <button
+            className='email-button email-button--top'
+            onClick={signInWithGoogle}
+        >
+            GET STARTED
+        </button>
     );
+
 }
+
+export default Login;

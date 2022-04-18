@@ -45,8 +45,8 @@ def getCourses(subjects: list):
     # tqdm for status logging
     # adapted from https://gist.github.com/phillies/4e44d2df02aeda9563991d0c7a0c411d#file-tqdm_log-py
     subject_log = tqdm(total=0, position=1, bar_format="{desc}")
-    subject_log.set_description_str(f"Current Subject: {subject}")
     for subject in tqdm(subjects):
+        subject_log.set_description_str(f"Current Subject: {subject}")
         url = courses_url.format(subject)
         response = requests.get(url)
         res = response.json()

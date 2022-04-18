@@ -2,52 +2,39 @@
 # -*- coding: utf-8 -*-
 
 """
-scrape course information from Ohio State course catalog
+Scrape course information from the Ohio State Course Catalog
 and export to CSV file
 """
 
-from selenium import webdriver
-from selenium.webdriver.support.ui import Select, WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-
-from tqdm import tqdm
-from catalogParse import getSubjects
-from helpers import checkPages
-
-import pandas as pd
+import tqdm
 import requests
 import warnings
 
-import sys, os, time
-import csv, json
-import pprint
+import pandas as pd
 
-warnings.filterwarnings("ignore")
+from catalogParse import getSubjects
+from utils.helpers import checkPages
+
+warnings.filterwarnings("ignore")  # surpress warnings
 
 courses_url = "https://content.osu.edu/v2/classes/search?q={}&campus=COL"
-page = 1
+page = 1  # TO-DO: fix hard-code
 
 
 def getCourses(subjects: list):
-    """scrape courses from osu catalog
+    # bar format is description so only shows text
+    # prevents duplicate progress bar
+    subject_log = tqdm.tqdm(total=0, position=1, bar_format="{desc}")
 
-    Args:
-        subjects (list): list of department codes ("subjects")
+    courses = []  # empty list to write course info to
 
-    Returns:
-        courses (df): dataframe of course information
-
-    """
-    courses = []
-
-    # tqdm for status logging
-    # adapted from https://gist.github.com/phillies/4e44d2df02aeda9563991d0c7a0c411d#file-tqdm_log-py
-    subject_log = tqdm(total=0, position=1, bar_format="{desc}")
-    for subject in tqdm(subjects):
+    for subject in tqdm.tqdm(subjects):
         subject_log.set_description_str(f"Current Subject: {subject}")
-        url = courses_url.format(subject)
+
+        url = courses_url.format(
+            subject
+        )  # i.e. https://content.osu.edu/v2/classes/search?q=art&campus=COL
+
         response = requests.get(url)
         res = response.json()
         totalPages = checkPages(res)
@@ -63,12 +50,25 @@ def getCourses(subjects: list):
                 data = res["data"]["courses"]
                 for i in range(len(data)):
                     if "title" in data[i]["course"]:
-                        subject = data["i"]["course"]["subject"]
+                        subject = data[i]["course"]["subject"]
                         catalog_number = data[i]["course"]["catalogNumber"]
                         course_id = subject + " " + catalog_number
                         course_title = data[i]["course"]["title"]
                         catalog_level = data[i]["course"]["catalogLevel"]
                         description = data[i]["course"]["description"]
+
+                        # # course attributes (i.e. Honors, GE)
+                        # if 'courseAttributes' in data[i]["course"]:
+                        #     for h in range(len(data[i]["courseAttributes"])):
+                        #         course_attribute = data[i]["courseAttributes"][h][
+                        #             "description"
+                        #         ]  # description of attribute
+                        #         attribute_type = data[i]["courseAttributes"][h][
+                        #             "name"
+                        #         ]  # attribute type (i.e. HON for honors)
+                        #     else:
+                        #         course_attribute = ""
+                        #         attribute_type = ""
 
                         courses.append(
                             {
@@ -77,16 +77,20 @@ def getCourses(subjects: list):
                                 "course_title": course_title,
                                 "catalog_level": catalog_level,
                                 "description": description,
+                                # "course_attribute": course_attribute,
+                                # "attribute_type": attribute_type,
                             }
                         )
+
+                    else:
+                        pass
             except:
                 pass
 
-        return courses
+    return courses
 
 
 def saveCourses():
-    """save course information to csv file"""
     courses = getCourses(
         subjects=getSubjects(
             driver_path="/Users/julia/Projects/buckiplan/scraper/chromedriver",
@@ -94,8 +98,13 @@ def saveCourses():
         )
     )
     df = pd.DataFrame(courses)
+
+    # To remove carriage return (\r), new line (\n) and tab (\t)
+    # fix for csv breaking
+    df = df.replace(r"\r+|\n+|\t+", "", regex=True)
+
     df.to_csv("data/courses.csv", index=False)
-    print("Information saved to CSV file")
+    print("Information saved to database")
 
 
 saveCourses()

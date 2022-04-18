@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { snooze } from '@au5ton/snooze';
-
+import { ConfigCourse, ConfigRoot } from './config';
 import { info, error, success } from './prettyPrint';
 import AvailableSection from '../models/AvailableSection';
 
@@ -10,7 +10,7 @@ import AvailableSection from '../models/AvailableSection';
     
 */
 
-export async function scrape(auth: ConfigAuth, course: ConfigCourse): Promise<AvailableSection[]> {
+export async function scrape(course: ConfigCourse): Promise<AvailableSection[]> {
     info('Opening browser')
     const browser = await puppeteer.launch({
         args: [

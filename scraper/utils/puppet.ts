@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { snooze } from '@au5ton/snooze';
 import { ConfigCourse, ConfigRoot } from './config';
-import { info, error, success } from './prettyPrint';
+import { info } from './prettyPrint';
 import AvailableSection from '../models/AvailableSection';
 
 /* 
@@ -10,64 +10,76 @@ import AvailableSection from '../models/AvailableSection';
     
 */
 
-export async function scrape(course: ConfigCourse): Promise<AvailableSection[]> {
-    info('Opening browser')
+export async function scrape(
+    course: ConfigCourse
+): Promise<AvailableSection[]> {
+    info('Opening browser');
     const browser = await puppeteer.launch({
         args: [
-            '--headless', 
+            '--headless',
             '--no-sandbox',
             '--disable-gpu',
             '--window-size=1920,1080',
             '--disable-dev-shm-usage',
             '--disable-setuid-sandbox',
-        ]
+        ],
     });
 
     info(`Started ${await browser.version()}`);
-    const page = await browser.newPage()
+    const page = await browser.newPage();
 
-    info('Navigating to https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.OSR_CAT_SRCH.GBL?')
-    await page.goto('https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.OSR_CAT_SRCH.GBL?')
+    info(
+        'Navigating to https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.OSR_CAT_SRCH.GBL?'
+    );
+    await page.goto(
+        'https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.OSR_CAT_SRCH.GBL?'
+    );
 
-    info('Clicking')
+    info('Clicking');
 
     // inner peoplesoft iframe
     await page.waitFor('#ptifrmtgtframe');
-    const frame = await page.frames().find(frame => frame.name() === 'TargetContent')!;
+    const frame = await page
+        .frames()
+        .find((frame) => frame.name() === 'TargetContent')!;
 
     // "Search"
-    info ('Filling form')
+    info('Filling form');
 
     // select the appropriate semester
-    await frame.waitForSelector('#CLASS_SRCH_WRK2_STRM\$35\$')
-    await frame.select('#CLASS_SRCH_WRK2_STRM\\$35\\$', course.SemesterCode)
-    await snooze(2000)
+    await frame.waitForSelector('#CLASS_SRCH_WRK2_STRM$35$');
+    await frame.select('#CLASS_SRCH_WRK2_STRM\\$35\\$', course.SemesterCode);
+    await snooze(2000);
 
     // select the appropriate subject
-    await frame.waitForSelector('#SSR_CLSRCH_WRK_SUBJECT_SRCH\$1')
-    await frame.select('#SSR_CLSRCH_WRK_SUBJECT_SRCH\\$1', course.Subject)
+    await frame.waitForSelector('#SSR_CLSRCH_WRK_SUBJECT_SRCH$1');
+    await frame.select('#SSR_CLSRCH_WRK_SUBJECT_SRCH\\$1', course.Subject);
 
     // uncheck "open only"
     await frame.waitForSelector('#SSR_CLSRCH_WRK_SSR_OPEN_ONLY\\$4');
-    await frame.click('#SSR_CLSRCH_WRK_SSR_OPEN_ONLY\\$4')
+    await frame.click('#SSR_CLSRCH_WRK_SSR_OPEN_ONLY\\$4');
 
     // type in the catalog number
     await frame.waitForSelector('#SSR_CLSRCH_WRK_CATALOG_NBR\\$2');
-    await frame.focus('#SSR_CLSRCH_WRK_CATALOG_NBR\\$2')
-    await page.keyboard.type(course.CatalogNumber)
+    await frame.focus('#SSR_CLSRCH_WRK_CATALOG_NBR\\$2');
+    await page.keyboard.type(course.CatalogNumber);
 
-    info('Submitting form')
+    info('Submitting form');
     // click the submit button, which will fail if done too quickly
-    await frame.waitForSelector('td > #win0divCLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH #CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH')
-    await snooze(2000)
-    await frame.click('td > #win0divCLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH #CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH')
+    await frame.waitForSelector(
+        'td > #win0divCLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH #CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH'
+    );
+    await snooze(2000);
+    await frame.click(
+        'td > #win0divCLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH #CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH'
+    );
 
-    info('Loading results')
-    await frame.waitForSelector('#ACE_DERIVED_CLSRCH_GROUP6')
+    info('Loading results');
+    await frame.waitForSelector('#ACE_DERIVED_CLSRCH_GROUP6');
 
-    info('Scraping DOM')
+    info('Scraping DOM');
 
-    console.log(await page.screenshot({ encoding: 'base64'}));
+    console.log(await page.screenshot({ encoding: 'base64' }));
     let data = await frame.evaluate(() => {
         function getRowElements() {
             let template = (x: any) => `trSSR_CLSRCH_MTG1$${x}_row1`;
@@ -75,7 +87,7 @@ export async function scrape(course: ConfigCourse): Promise<AvailableSection[]> 
             for (let i = 0; true; i++) {
                 let e = document.getElementById(template(i));
                 if (e === null) break;
-                results.push(e); 
+                results.push(e);
             }
             return results;
 
@@ -87,15 +99,27 @@ export async function scrape(course: ConfigCourse): Promise<AvailableSection[]> 
 
         function getRowData(row: HTMLElement) {
             let columns = Array.from(row.children);
-            return columns.map((e, i) => i !== 10 ? e.textContent?.trim() : e?.querySelector('img')?.getAttribute('alt'))
+            return columns.map((e, i) =>
+                i !== 10
+                    ? e.textContent?.trim()
+                    : e?.querySelector('img')?.getAttribute('alt')
+            );
         }
 
-        return Promise.resolve(Array.from(getRowElements()).map(row => getRowData(row)));
-    })
+        return Promise.resolve(
+            Array.from(getRowElements()).map((row) => getRowData(row))
+        );
+    });
 
     info('Closing browser');
-    await browser.close()
+    await browser.close();
 
-    return data.map(e => new AvailableSection(course.Subject, course.CatalogNumber, e.map(e => (e === null || e === undefined) ? "" : e)));
-
+    return data.map(
+        (e) =>
+            new AvailableSection(
+                course.Subject,
+                course.CatalogNumber,
+                e.map((e) => (e === null || e === undefined ? '' : e))
+            )
+    );
 }

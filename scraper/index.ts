@@ -1,3 +1,9 @@
+/* 
+    code adapted from @cougargrades/peoplesoft
+    https://github.com/cougargrades/peoplesoft/blob/master/src/index.ts
+    
+*/
+
 import Queue from 'bull';
 import express from 'express';
 import puppeteer from 'puppeteer';

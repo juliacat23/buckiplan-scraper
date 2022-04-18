@@ -13,7 +13,7 @@ import warnings
 import pandas as pd
 
 from catalogParse import getSubjects
-from utils.helpers import checkPages
+from helpers import checkPages
 
 warnings.filterwarnings("ignore")  # surpress warnings
 

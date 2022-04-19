@@ -13,7 +13,7 @@ import warnings
 import pandas as pd
 
 from catalogParse import getSubjects
-from helpers import checkPages
+from utils.helpers import checkPages
 
 from colorama import init, Fore
 

@@ -60,17 +60,17 @@ def getCourses(subjects: list):
                         description = data[i]["course"]["description"]
 
                         # # course attributes (i.e. Honors, GE)
-                        # if 'courseAttributes' in data[i]["course"]:
-                        #     for h in range(len(data[i]["courseAttributes"])):
-                        #         course_attribute = data[i]["courseAttributes"][h][
-                        #             "description"
-                        #         ]  # description of attribute
-                        #         attribute_type = data[i]["courseAttributes"][h][
-                        #             "name"
-                        #         ]  # attribute type (i.e. HON for honors)
-                        #     else:
-                        #         course_attribute = ""
-                        #         attribute_type = ""
+                        if "courseAttributes" in data[i]["course"]:
+                            for h in range(len(data[i]["courseAttributes"])):
+                                course_attribute = data[i]["courseAttributes"][h][
+                                    "description"
+                                ]  # description of attribute
+                                attribute_type = data[i]["courseAttributes"][h][
+                                    "name"
+                                ]  # attribute type (i.e. HON for honors)
+                        else:
+                            course_attribute = " "
+                            attribute_type = " "
 
                         courses.append(
                             {
@@ -79,8 +79,8 @@ def getCourses(subjects: list):
                                 "course_title": course_title,
                                 "catalog_level": catalog_level,
                                 "description": description,
-                                # "course_attribute": course_attribute,
-                                # "attribute_type": attribute_type,
+                                "course_attribute": course_attribute,
+                                "attribute_type": attribute_type,
                             }
                         )
 

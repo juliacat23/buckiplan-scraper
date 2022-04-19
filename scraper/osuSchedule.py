@@ -26,10 +26,10 @@ warnings.filterwarnings("ignore")  # surpress warnings
 
 def getSections(subjects: list, terms: list):
     term_log = tqdm.tqdm(total=0, position=1, bar_format="{desc}")
-    subject_log = tqdm.tqdm(total=0, position=2, bar_format="{desc}")
+    subject_log = tqdm.tqdm(total=0, position=3, bar_format="{desc}")
 
     sections = []
-    for term in tqdm.tqdm(terms, colour="##0000FF"):
+    for term in tqdm.tqdm(terms):
         term_log.set_description_str(f"Current Term: {term}")
 
         for subject in tqdm.tqdm(subjects, colour="#00FF00"):

@@ -8,7 +8,6 @@ and export to CSV file
 
 import tqdm
 import requests
-import warnings
 
 import pandas as pd
 
@@ -21,7 +20,7 @@ from colorama import init, Fore
 init(autoreset=True)
 
 courses_url = "https://content.osu.edu/v2/classes/search?q={}&campus=COL"
-page = 1  # TO-DO: fix hard-code
+page = 1  # TODO: fix hard-code
 
 
 def getCourses(subjects: list):
@@ -62,20 +61,23 @@ def getCourses(subjects: list):
                         catalog_level = data[i]["course"]["catalogLevel"]
                         description = data[i]["course"]["description"]
 
-                        # # course attributes (i.e. Honors, GE)
-                        if "courseAttributes" in data[i]["course"]:
-                            # debug
+                        # course attributes (i.e. Honors, GE)
+                        for h in range(len(data[i]["course"]["courseAttributes"])):
                             # print(Fore.GREEN + "Success! Has Attribute")
-                            for h in range(len(data[i]["courseAttributes"])):
-                                course_attribute = data[i]["courseAttributes"][h][
+                            try:
+                                course_attribute = data[i]["course"][
+                                    "courseAttributes"
+                                ][h][
                                     "description"
                                 ]  # description of attribute
-                                attribute_type = data[i]["courseAttributes"][h][
+                                attribute_type = data[i]["course"]["courseAttributes"][
+                                    h
+                                ][
                                     "name"
                                 ]  # attribute type (i.e. HON for honors)
-                        else:
-                            course_attribute = " "
-                            attribute_type = " "
+                            except:
+                                course_attribute = " "
+                                attribute_type = " "
 
                             courses.append(
                                 {

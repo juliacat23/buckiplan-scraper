@@ -22,9 +22,9 @@ page = 1  # TO-DO: fix hard-code
 
 
 def getCourses(subjects: list):
-    # bar format is description so only shows text
-    # prevents duplicate progress bar
-    subject_log = tqdm.tqdm(total=0, position=1, bar_format="{desc}")
+    # tqdm status message logging
+    # code adapted from https://gist.github.com/phillies/4e44d2df02aeda9563991d0c7a0c411d#file-tqdm_log-py
+    subject_log = tqdm.tqdm(total=0, position=1, bar_format="{desc}") # prevents duplicate progress bar
 
     courses = []  # empty list to write course info to
 
@@ -102,9 +102,9 @@ def saveCourses():
     # To remove carriage return (\r), new line (\n) and tab (\t)
     # fix for csv breaking
     df = df.replace(r"\r+|\n+|\t+", "", regex=True)
-
+    df = df.drop_duplicates(subset="course_id", keep="first", inplace=True)
     df.to_csv("data/courses.csv", index=False)
-    print("Information saved to database")
+    print("Information saved to CSV file")
 
 
 saveCourses()

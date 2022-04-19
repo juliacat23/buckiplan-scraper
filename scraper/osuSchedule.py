@@ -11,9 +11,8 @@ import requests
 import warnings
 import pandas as pd
 
-from catalogParse import getSubjects
-from termParse import getTerms
-from helpers import checkPages
+from catalogParse import getSubjects, getTerms
+from utils.helpers import checkPages
 
 
 from colorama import init, Fore

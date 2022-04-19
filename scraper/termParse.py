@@ -37,7 +37,16 @@ def getTerms(driver_path, url):
     count = len(
         WebDriverWait(driver, 20).until(
             EC.visibility_of_all_elements_located(
-                (By.XPATH, "//select[@id='SSR_CLSRCH_WRK_SUBJECT_SRCH$1']/option")
+                (By.XPATH, "//select[@id='CLASS_SRCH_WRK2_STRM$35$']/option")
             )
         )
     )
+    dropdown = Select(
+        driver.find_element_by_xpath("//*[@id='CLASS_SRCH_WRK2_STRM$35$']")
+    )
+    for i in dropdown.options:
+        terms.append(i.get_attribute("value"))
+    driver.close()
+    terms.pop(0)
+
+    return terms

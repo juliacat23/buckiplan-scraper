@@ -15,7 +15,10 @@ import pandas as pd
 from catalogParse import getSubjects
 from helpers import checkPages
 
-warnings.filterwarnings("ignore")  # surpress warnings
+from colorama import init, Fore
+
+# Cross-platform colored terminal text
+init(autoreset=True)
 
 courses_url = "https://content.osu.edu/v2/classes/search?q={}&campus=COL"
 page = 1  # TO-DO: fix hard-code
@@ -106,7 +109,7 @@ def saveCourses():
     df = df.replace(r"\r+|\n+|\t+", "", regex=True)
     df.drop_duplicates(subset="course_id", keep="first", inplace=True)
     df.to_csv("data/courses.csv", index=False)
-    print("Information saved to CSV file")
+    print(Fore.GREEN + "Information saved to CSV file")
 
 
 saveCourses()

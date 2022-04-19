@@ -8,6 +8,7 @@ and export to CSV file
 
 import tqdm
 import requests
+import warnings
 import pandas as pd
 
 from catalogParse import getSubjects
@@ -19,6 +20,8 @@ from colorama import init, Fore
 
 # Cross-platform colored terminal text
 init(autoreset=True)
+
+warnings.filterwarnings("ignore")  # surpress warnings
 
 
 def getSections(subjects: list, terms: list):

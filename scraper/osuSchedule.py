@@ -26,10 +26,10 @@ def getSections(subjects: list, terms: list):
     subject_log = tqdm.tqdm(total=0, position=2, bar_format="{desc}")
 
     sections = []
-    for term in tqdm.tqdm(terms, colour=Fore.BLUE):
+    for term in tqdm.tqdm(terms, colour="##0000FF"):
         term_log.set_description_str(f"Current Term: {term}")
 
-        for subject in tqdm.tqdm(subjects, colour=Fore.GREEN):
+        for subject in tqdm.tqdm(subjects, colour="#00FF00"):
             subject_log.set_description_str(f"Current Subject: {subject}")
             url = f"https://content.osu.edu/v2/classes/search?q={subject}&campus=COL&p=1&term={term}"
             response = requests.get(url)

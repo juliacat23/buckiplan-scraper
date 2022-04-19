@@ -13,13 +13,3 @@
 | osuCourses.py   | Scrape course information from the Ohio State Course Catalog and export to CSV file        |
 | osuSchedule.py  | Scrape course + schedule information from the Ohio State Course Catalog                    |
 | helpers.py      | various helper functions to use in other scripts                                           |
-
-## Setup
-
-### Create Virtual Environment
-
-`$ python3 -m venv .venv` --> `source .vebv/bin/activate`
-
-### Install Required Packages
-
-`$ pip install -r requirements.txt`

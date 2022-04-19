@@ -64,6 +64,8 @@ def getCourses(subjects: list):
 
                         # # course attributes (i.e. Honors, GE)
                         if "courseAttributes" in data[i]["course"]:
+                            # debug
+                            # print(Fore.GREEN + "Success! Has Attribute")
                             for h in range(len(data[i]["courseAttributes"])):
                                 course_attribute = data[i]["courseAttributes"][h][
                                     "description"
@@ -75,17 +77,17 @@ def getCourses(subjects: list):
                             course_attribute = " "
                             attribute_type = " "
 
-                        courses.append(
-                            {
-                                "subject": subject,
-                                "course_id": course_id,
-                                "course_title": course_title,
-                                "catalog_level": catalog_level,
-                                "description": description,
-                                "course_attribute": course_attribute,
-                                "attribute_type": attribute_type,
-                            }
-                        )
+                            courses.append(
+                                {
+                                    "subject": subject,
+                                    "course_id": course_id,
+                                    "course_title": course_title,
+                                    "catalog_level": catalog_level,
+                                    "description": description,
+                                    "course_attribute": course_attribute,
+                                    "attribute_type": attribute_type,
+                                }
+                            )
 
                     else:
                         pass

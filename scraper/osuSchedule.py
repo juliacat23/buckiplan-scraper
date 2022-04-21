@@ -51,10 +51,11 @@ def getSections(subjects: list, terms: list):
                     for i in range(len(data)):
                         if "title" in data[i]["course"]:
                             subject = data[i]["course"]["subject"]
+                            title = data[i]["title"]
                             catalog_number = data[i]["course"]["catalogNumber"]
                             course_id = data[i]["course"]["courseId"]
                             course_name = subject + " " + catalog_number
-                            term = data[i]["course"]["term"]
+                            term = data[i]["course"][i]["term"]
 
                             sections.append(
                                 {

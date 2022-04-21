@@ -114,8 +114,8 @@ def saveCourses():
 
     # To remove carriage return (\r), new line (\n) and tab (\t)
     # fix for csv breaking
-    df = df.replace(r"\r+|\n+|\t+", "", regex=True)
-    df.drop_duplicates(subset="course_name", keep="first", inplace=True)
+    courses = df.replace(r"\r+|\n+|\t+", "", regex=True)
+    courses.drop_duplicates(subset="course_name", keep="first", inplace=True)
 
     # parse description and seperate into prereqs
     print(Fore.GREEN + "Parsing prerequsite requirements ... ")

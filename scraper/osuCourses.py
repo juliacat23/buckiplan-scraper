@@ -55,10 +55,12 @@ def getCourses(subjects: list):
                 for i in range(len(data)):
                     if "title" in data[i]["course"]:
                         subject = data[i]["course"]["subject"]
+                        course_id = data[i]["course"]["courseId"]
                         catalog_number = data[i]["course"]["catalogNumber"]
-                        course_id = subject + " " + catalog_number
+                        course_name = subject + " " + catalog_number
                         course_title = data[i]["course"]["title"]
-                        catalog_level = data[i]["course"]["catalogLevel"]
+                        academic_group = data[i]["course"]["academicGroup"]
+                        academic_career = data[i]["course"]["academicCareer"]
                         description = data[i]["course"]["description"]
 
                         # course attributes (i.e. Honors, GE)
@@ -83,8 +85,10 @@ def getCourses(subjects: list):
                                 {
                                     "subject": subject,
                                     "course_id": course_id,
+                                    "course_name": course_name,
                                     "course_title": course_title,
-                                    "catalog_level": catalog_level,
+                                    "academic_group": academic_group,
+                                    "academic_career": academic_career,
                                     "description": description,
                                     "course_attribute": course_attribute,
                                     "attribute_type": attribute_type,
@@ -111,9 +115,16 @@ def saveCourses():
     # To remove carriage return (\r), new line (\n) and tab (\t)
     # fix for csv breaking
     df = df.replace(r"\r+|\n+|\t+", "", regex=True)
-    df.drop_duplicates(subset="course_id", keep="first", inplace=True)
+    df.drop_duplicates(subset="course_name", keep="first", inplace=True)
+
+    # parse description and seperate into prereqs
+    print(Fore.GREEN + "Parsing prerequsite requirements ... ")
+    courses[["description", "prereqs"]] = courses.description.str.split(
+        pat="Prereq", n=1, expand=True
+    )
+    courses["prereqs"] = courses["prereqs"].str.replace(r":", "")  # strip whitespace
     df.to_csv("data/courses.csv", index=False)
-    print(Fore.GREEN + "Information saved to CSV file")
+    print(Fore.GREEN + "Success! Information saved to CSV file")
 
 
 saveCourses()

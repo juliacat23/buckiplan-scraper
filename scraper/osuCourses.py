@@ -110,20 +110,21 @@ def saveCourses():
             url="https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.CLASS_SEARCH.GBL?",
         )
     )
-    df = pd.DataFrame(courses)
+    courses_df = pd.DataFrame(courses)
 
-    # To remove carriage return (\r), new line (\n) and tab (\t)
-    # fix for csv breaking
-    courses = df.replace(r"\r+|\n+|\t+", "", regex=True)
-    courses.drop_duplicates(subset="course_name", keep="first", inplace=True)
+    courses_df.drop_duplicates(subset="course_name", keep="first", inplace=True)
 
     # parse description and seperate into prereqs
     print(Fore.GREEN + "Parsing prerequsite requirements ... ")
-    courses[["description", "prereqs"]] = courses.description.str.split(
+    courses_df[["description", "prereqs"]] = courses_df.description.str.split(
         pat="Prereq", n=1, expand=True
     )
-    courses["prereqs"] = courses["prereqs"].str.replace(r":", "")  # strip whitespace
-    df.to_csv("data/courses.csv", index=False)
+    courses_df["prereqs"] = courses["prereqs"].str.replace(r":", "")  # strip whitespace
+
+    # To remove carriage return (\r), new line (\n) and tab (\t)
+    # fix for csv breaking
+    courses_df = courses_df.replace(r"\r+|\n+|\t+", "", regex=True)
+    courses_df.to_csv("data/courses.csv", index=False)
     print(Fore.GREEN + "Success! Information saved to CSV file")
 
 

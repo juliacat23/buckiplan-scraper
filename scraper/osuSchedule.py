@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Scrape course information from the Ohio State Course Catalog
-and export to CSV file
+Retrieve course information from the Ohio State course 
+schedule API and export to CSV file
 """
 
 import tqdm
@@ -31,7 +31,7 @@ def getSections(subjects: list, terms: list):
     for term in tqdm.tqdm(terms):
         term_log.set_description_str(f"Current Term: {term}")
 
-        for subject in tqdm.tqdm(subjects, colour="#00FF00"):
+        for subject in tqdm.tqdm(subjects):
             subject_log.set_description_str(f"Current Subject: {subject}")
             url = f"https://content.osu.edu/v2/classes/search?q={subject}&campus=COL&p=1&term={term}"
             response = requests.get(url)
@@ -52,57 +52,17 @@ def getSections(subjects: list, terms: list):
                         if "title" in data[i]["course"]:
                             subject = data[i]["course"]["subject"]
                             catalog_number = data[i]["course"]["catalogNumber"]
-                            course_id = subject + " " + catalog_number
+                            course_id = data[i]["course"]["courseId"]
+                            course_name = subject + " " + catalog_number
+                            term = data[i]["course"]["term"]
 
-                            for j in range(len(data[i]["sections"])):
-                                section_id = data[i]["sections"][j]["classNumber"]
-                                component = data[i]["sections"][j]["component"]
-                                instruction_mode = data[i]["sections"][j][
-                                    "instructionMode"
-                                ]
-
-                                for k in range(len(data[i]["sections"][j]["meetings"])):
-                                    meeting_num = data[i]["sections"][j]["meetings"][k][
-                                        "meetingNumber"
-                                    ]
-                                    startTime = data[i]["sections"][j]["meetings"][k][
-                                        "startTime"
-                                    ]
-                                    endTime = data[i]["sections"][j]["meetings"][k][
-                                        "endTime"
-                                    ]
-                                    monday = data[i]["sections"][j]["meetings"][k][
-                                        "monday"
-                                    ]
-                                    tuesday = data[i]["sections"][j]["meetings"][k][
-                                        "tuesday"
-                                    ]
-                                    wednesday = data[i]["sections"][j]["meetings"][k][
-                                        "wednesday"
-                                    ]
-                                    thursday = data[i]["sections"][j]["meetings"][k][
-                                        "thursday"
-                                    ]
-                                    friday = data[i]["sections"][j]["meetings"][k][
-                                        "friday"
-                                    ]
-
-                                    sections.append(
-                                        {
-                                            "course_id": course_id,
-                                            "section_id": section_id,
-                                            "component": component,
-                                            "instruction_mode": instruction_mode,
-                                            "meeting_num": meeting_num,
-                                            "startTime": startTime,
-                                            "endTime": endTime,
-                                            "monday": monday,
-                                            "tuesday": tuesday,
-                                            "wednesday": wednesday,
-                                            "thursday": thursday,
-                                            "friday": friday,
-                                        }
-                                    )
+                            sections.append(
+                                {
+                                    "course_name": course_name,
+                                    "course_id": course_id,
+                                    "term": term,
+                                }
+                            )
                         else:
                             pass
                 except:

@@ -59,9 +59,13 @@ def getCourses(subjects: list):
                         catalog_number = data[i]["course"]["catalogNumber"]
                         course_name = subject + " " + catalog_number
                         course_title = data[i]["course"]["title"]
-                        academic_group = data[i]["course"]["academicGroup"]
+                        units = data[i]["course"]["minUnits"]
                         academic_career = data[i]["course"]["academicCareer"]
                         description = data[i]["course"]["description"]
+                        try:
+                            academic_group = data[i]["course"]["academicGroup"]
+                        except:
+                            academic_group = " "
 
                         # course attributes (i.e. Honors, GE)
                         for h in range(len(data[i]["course"]["courseAttributes"])):
@@ -87,6 +91,7 @@ def getCourses(subjects: list):
                                     "course_id": course_id,
                                     "course_name": course_name,
                                     "course_title": course_title,
+                                    "units": units,
                                     "academic_group": academic_group,
                                     "academic_career": academic_career,
                                     "description": description,
@@ -110,20 +115,13 @@ def saveCourses():
             url="https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.CLASS_SEARCH.GBL?",
         )
     )
-    courses_df = pd.DataFrame(courses)
+    df = pd.DataFrame(courses)
 
-    courses_df.drop_duplicates(subset="course_name", keep="first", inplace=True)
-
-    # parse description and seperate into prereqs
-    print(Fore.GREEN + "Parsing prerequsite requirements ... ")
-    courses_df[["description", "prereqs"]] = courses_df.description.str.split(
-        pat="Prereq", n=1, expand=True
-    )
-    courses_df["prereqs"] = courses["prereqs"].str.replace(r":", "")  # strip whitespace
+    df.drop_duplicates(subset="course_name", keep="first", inplace=True)
 
     # To remove carriage return (\r), new line (\n) and tab (\t)
     # fix for csv breaking
-    courses_df = courses_df.replace(r"\r+|\n+|\t+", "", regex=True)
+    courses_df = df.replace(r"\r+|\n+|\t+", "", regex=True)
     courses_df.to_csv("data/courses.csv", index=False)
     print(Fore.GREEN + "Success! Information saved to CSV file")
 

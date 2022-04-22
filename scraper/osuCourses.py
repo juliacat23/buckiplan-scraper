@@ -62,6 +62,8 @@ def getCourses(subjects: list):
                         units = data[i]["course"]["minUnits"]
                         academic_career = data[i]["course"]["academicCareer"]
                         description = data[i]["course"]["description"]
+                        cross_list = data[i]["course"]["equivalentId"]
+                        multi_enroll = data[i]["course"]["allowMultiEnroll"]
                         try:
                             academic_group = data[i]["course"]["academicGroup"]
                         except:
@@ -95,6 +97,8 @@ def getCourses(subjects: list):
                                     "academic_group": academic_group,
                                     "academic_career": academic_career,
                                     "description": description,
+                                    "multi_enroll": multi_enroll,
+                                    "cross_list": cross_list,
                                     "course_attribute": course_attribute,
                                     "attribute_type": attribute_type,
                                 }

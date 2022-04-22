@@ -117,7 +117,11 @@ def saveCourses():
     )
     df = pd.DataFrame(courses)
 
-    df.drop_duplicates(subset="course_name", keep="first", inplace=True)
+    df.drop_duplicates(
+        subset=["course_name", "course_attribute", "attribute_type"],
+        keep="first",
+        inplace=True,
+    )
 
     # To remove carriage return (\r), new line (\n) and tab (\t)
     # fix for csv breaking

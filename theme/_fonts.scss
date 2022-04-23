@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+// fonts
+@font-face {
+    font-family: 'ProximaNova';
+    src: url('../fonts/ProximaNova-Regular.otf');
+  }
+  
+  @font-face {
+    font-family: 'ProximaNovaBold';
+    src: url('../fonts/ProximaNova-Bold.otf');
+    font-weight: bold;
+  }
+  
+  @font-face {
+    font-family: 'ProximaNovaExtrabold';
+    src: url('../fonts/ProximaNova-Extrabold.otf');
+    font-weight: 800;
+  }
+  
+  @font-face {
+    font-family: 'ProximaNovaThin';
+    src: url('../fonts/ProximaNova-Thin.otf');
+    font-weight: 300;
+  }

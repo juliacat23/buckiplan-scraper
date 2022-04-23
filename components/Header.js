@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import '../styles/Header.module.scss';
 
-const Header = (props) => (
+const Header = () => (
     <div className='landing top-sec'>
         <div className='container p-0 m-0'>
             <div className='row top-bar phonepad no-gutters'>

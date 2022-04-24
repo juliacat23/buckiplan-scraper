@@ -105,6 +105,7 @@ coursesWithAttrs["academic_group"] = coursesWithAttrs["academic_group"].replace(
 coursesWithAttrs["attribute_type"] = np.where((coursesWithAttrs["course_attribute"].str.contains('Not eligible for College Credit Plus program')), np.nan, coursesWithAttrs["attribute_type"])
 coursesWithAttrs["course_attribute"] = coursesWithAttrs["course_attribute"].replace("Not eligible for College Credit Plus program", np.nan)
 
+coursesWithAttrs = coursesWithAttrs.replace({'multi_enroll': {'Y': True, 'N': False}})
 sorted_df = coursesWithAttrs.sort_values(by=['course_name'], ascending=True)
 
 

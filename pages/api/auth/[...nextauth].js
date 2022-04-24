@@ -15,16 +15,23 @@ export default NextAuth({
     adapter: PrismaAdapter(prisma),
     providers: [
         GithubProvider({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: proccess.env.GITHUB_SECRET,
+            clientId: process.env.NEXT_PUBLIC_GITHUB_ID,
+            clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET,
         }),
         EmailProvider({
-            server: process.env.EMAIL_SERVER,
-            from: process.env.EMAIL_FROM,
+            server: {
+                host: process.env.NEXT_PUBLIC_EMAIL_SERVER_HOST,
+                port: process.env.EMAIL_SERVER_PORT,
+                auth: {
+                    user: process.env.NEXT_PUBLIC_EMAIL_SERVER_USER,
+                    pass: process.env.NEXT_PUBLIC_EMAIL_SERVER_PASSWORD,
+                },
+            },
+            from: process.env.NEXT_PUBLIC_EMAIL_FROM,
         }),
         GoogleProvider({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_SECRET,
+            clientId: process.env.NEXT_PUBLIC_GOOGLE_ID,
+            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET,
         }),
         // FacebookProvider({
         //     clientId: process.env.FACEBOOK_ID,

@@ -1,11 +1,32 @@
-import Layout from '../layouts/Layout';
-import Hero from '../components/Hero';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React from 'react';
 
-const Index = () => {
-    return (
-        <Layout pageTitle='Landing Page Nextjs'>
-            <Hero />
-        </Layout>
-    );
+const Homepage = () => {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') {
+        return <>Loading...</>;
+    }
+
+    if (status === 'authenticated') {
+        return (
+            <>
+                Signed in as {session.user.email} <br />
+                <button onClick={() => signOut()}>Sign out</button>
+            </>
+        );
+    }
+    if (status === 'unauthenticated') {
+        return (
+            <>
+                Not signed in <br />
+                <Link href="/api/auth/signin">
+                    <a>Login</a>
+                </Link>
+            </>
+        );
+    }
 };
-export default Index;
+
+export default Homepage;

@@ -1,8 +1,11 @@
-import Head from 'next/head';
-import Image from 'next/image';
-
 import Header from '../components/Header';
+import Layout from '../layouts/Layout';
 
-export default function Home() {
-    return <Header />;
-}
+const Index = () => {
+    return (
+        <Layout pageTitle='Landing Page Nextjs'>
+            <Header />
+        </Layout>
+    );
+};
+export default Index;

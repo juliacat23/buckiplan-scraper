@@ -20,3 +20,19 @@ model User {
 
   @@map(name: "users")
 }
+
+model Course {
+  course_id        Int     @id @unique
+  subject          String
+  course_name      String  @unique
+  course_title     String
+  units            Int
+  academic_group   String?
+  academic_career  String?
+  description      String
+  multi_enroll     Boolean
+  cross_list       String?
+  terms            String
+  course_attribute String?
+  attribute_type   String?
+}

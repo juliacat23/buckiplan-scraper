@@ -19,7 +19,7 @@ function MobileNav({ open, setOpen }) {
                 {' '}
                 {/*logo container*/}
                 <a className="text-xl font-semibold" href="/">
-                    LOGO
+                    BuckiPlan
                 </a>
             </div>
             <div className="flex flex-col ml-4">
@@ -57,7 +57,7 @@ export default function Navbar() {
             <MobileNav open={open} setOpen={setOpen} />
             <div className="w-3/12 flex items-center">
                 <a className="text-2xl font-semibold" href="/">
-                    LOGO
+                    BuckiPlan
                 </a>
             </div>
             <div className="w-9/12 flex justify-end items-center">

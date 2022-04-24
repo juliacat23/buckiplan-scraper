@@ -26,7 +26,7 @@ const Hero = () => {
                                 unchanged.
                             </p>
                             <a href='#' className='btn btn-warning'>
-                                Find Out How{' '}
+                                Begin Planning{' '}
                                 <span className='ml-2 right-icon'>&#8594;</span>
                             </a>
                         </div>

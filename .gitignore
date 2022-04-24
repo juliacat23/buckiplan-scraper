@@ -33,3 +33,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# prevent data leakage
+prisma/seeds

@@ -22,11 +22,12 @@ model User {
 }
 
 model Course {
-  course_id        Int     @id @unique
+  uid              Int     @id @default(autoincrement())
+  course_id        Int
   subject          String
-  course_name      String  @unique
+  course_name      String
   course_title     String
-  units            Int
+  units            Float
   academic_group   String?
   academic_career  String?
   description      String

@@ -1,32 +1,10 @@
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import React from 'react';
-
-const Homepage = () => {
-    const { data: session, status } = useSession();
-
-    if (status === 'loading') {
-        return <>Loading...</>;
-    }
-
-    if (status === 'authenticated') {
-        return (
-            <>
-                Signed in as {session.user.email} <br />
-                <button onClick={() => signOut()}>Sign out</button>
-            </>
-        );
-    }
-    if (status === 'unauthenticated') {
-        return (
-            <>
-                Not signed in <br />
-                <Link href="/api/auth/signin">
-                    <a>Login</a>
-                </Link>
-            </>
-        );
-    }
+import Layout from '../layouts/Layout';
+import Navbar from '../components/Navbar';
+const Index = () => {
+    return (
+        <Layout pageTitle="Landing Page Nextjs">
+            <Navbar />
+        </Layout>
+    );
 };
-
-export default Homepage;
+export default Index;

@@ -94,8 +94,20 @@ types.drop_duplicates(
 )
 
 coursesWOAttrs = merged.copy()
-coursesWOAttrs
+del coursesWOAttrs['attribute_type']
+del coursesWOAttrs['course_attribute']
+
 coursesWithAttrs = coursesWOAttrs.merge(attrs, on="course_id")
 coursesWithAttrs = coursesWithAttrs.merge(types, on="course_id")
 coursesWithAttrs.drop_duplicates(keep="first", inplace=True)
-coursesWithAttrs.to_csv("data/coursesWithSemesters.csv")
+coursesWithAttrs.insert(0, 'course_id', coursesWithAttrs.pop('course_id'))
+coursesWithAttrs["academic_group"] = coursesWithAttrs["academic_group"].replace(" ", np.nan)
+coursesWithAttrs["attribute_type"] = np.where((coursesWithAttrs["course_attribute"].str.contains('Not eligible for College Credit Plus program')), np.nan, coursesWithAttrs["attribute_type"])
+coursesWithAttrs["course_attribute"] = coursesWithAttrs["course_attribute"].replace("Not eligible for College Credit Plus program", np.nan)
+
+sorted_df = coursesWithAttrs.sort_values(by=['course_name'], ascending=True)
+
+
+sorted_df.to_csv("data/coursesWithSemesters.csv", index=False)
+
+sorted_df.to_json('data/courses.json', orient='records')

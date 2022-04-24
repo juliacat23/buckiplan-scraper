@@ -1,10 +1,6 @@
 import Layout from '../layouts/Layout';
-import Navbar from '../components/Navbar';
+
 const Index = () => {
-    return (
-        <Layout pageTitle="BuckiPlan">
-            <Navbar />
-        </Layout>
-    );
+    return <Layout pageTitle="BuckiPlan">Hello World!</Layout>;
 };
 export default Index;

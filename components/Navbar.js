@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 
 function NavLink({ to, children }) {
     return (
@@ -51,6 +52,7 @@ function MobileNav({ open, setOpen }) {
 }
 
 export default function Navbar() {
+    const session = useSession();
     const [open, setOpen] = useState(false);
     return (
         <nav className="flex filter drop-shadow-md bg-white px-4 py-4 h-20 items-center">
@@ -86,8 +88,19 @@ export default function Navbar() {
                 </div>
 
                 <div className="hidden md:flex">
-                    <NavLink to="/contact">CONTACT</NavLink>
                     <NavLink to="/about">ABOUT</NavLink>
+                    <NavLink to="/contact">CONTACT</NavLink>
+                    {session.data ? (
+                        // sign out
+                        <button className="mx-4" onClick={signOut}>
+                            Log Out
+                        </button>
+                    ) : (
+                        // sign in
+                        <NavLink to="/auth/signin">
+                            <button className="mx-4">LOGIN</button>
+                        </NavLink>
+                    )}
                 </div>
             </div>
         </nav>

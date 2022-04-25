@@ -5,6 +5,7 @@ import React from 'react';
 import { Heading } from '@chakra-ui/layout';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/button';
+import CourseModal from '../components/CourseModal';
 
 const Home = () => {
     const { colorMode, toggleColorMode } = useColorMode();
@@ -33,6 +34,7 @@ const Home = () => {
                 >
                     {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                 </IconButton>
+                <CourseModal />
             </main>
 
             <footer className={styles.footer}>

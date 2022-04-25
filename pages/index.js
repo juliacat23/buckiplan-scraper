@@ -1,6 +1,4 @@
-import Layout from '../layouts/Layout';
-
 const Index = () => {
-    return <Layout pageTitle="BuckiPlan">Hello World!</Layout>;
+    return <div> Hello World!</div>;
 };
 export default Index;

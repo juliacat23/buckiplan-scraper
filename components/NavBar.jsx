@@ -63,7 +63,7 @@ export default function NavBar() {
                         fontFamily={'heading'}
                         color={useColorModeValue('gray.800', 'white')}
                     >
-                        Logo
+                       BuckiPlan
                     </Text>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -92,7 +92,7 @@ export default function NavBar() {
                         fontWeight={600}
                         color={'white'}
                         bg={'pink.400'}
-                        href={'#'}
+                        href={'/signup'}
                         _hover={{
                             bg: 'pink.300',
                         }}

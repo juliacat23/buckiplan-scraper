@@ -1,3 +1,6 @@
+import MobileNav from './Navigation/MobileNav';
+import DesktopNav from './Navigation/DesktopNav';
+
 import {
     Box,
     Flex,

@@ -1,12 +1,9 @@
-import { Toggle } from '@supabase/ui';
 import React from 'react';
-import {
-    Logo,
-    MenuLinks,
-    MenuToggle,
-    NavBarContainer,
-    ToggleLayout,
-} from '../components/Navigation';
+import Logo from './Navigation/Logo';
+import MenuLinks from './Navigation/MenuLinks';
+import MenuToggle from './Navigation/MenuToggle';
+import ToggleLayout from './Navigation/ToggleLayout';
+import NavBarContainer from './Navigation/NavBarContainer';
 
 const NavBar = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -14,9 +11,9 @@ const NavBar = (props) => {
 
     return (
         <NavBarContainer {...props}>
-            <Logo w="100px" />
+            <Logo w="300px" />
             <MenuLinks isOpen={isOpen} />
-            <Toggle />
+            <ToggleLayout />
             <MenuToggle toggle={toggle} isOpen />
         </NavBarContainer>
     );

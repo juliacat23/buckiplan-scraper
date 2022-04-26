@@ -35,10 +35,7 @@ export default function SignUp() {
                         <Heading fontSize={'4xl'} textAlign={'center'}>
                             Sign up
                         </Heading>
-                        <Text
-                            fontSize={'lg'}
-                            color={useColorModeValue('gray.600', 'gray.400')}
-                        >
+                        <Text fontSize={'lg'} color={'gray.600'}>
                             to save, load, and export your degree plan
                         </Text>
                     </Stack>
@@ -98,10 +95,10 @@ export default function SignUp() {
                                 <Button
                                     loadingText="Submitting"
                                     size="lg"
-                                    bg={'scarlet.600'}
+                                    bg={'blue.400'}
                                     color={'white'}
                                     _hover={{
-                                        bg: 'scarlet.700',
+                                        bg: 'blue.500',
                                     }}
                                 >
                                     Sign up
@@ -110,7 +107,7 @@ export default function SignUp() {
                             <Stack pt={6}>
                                 <Text align={'center'}>
                                     Already a user?{' '}
-                                    <Link color={'scarlet.600'}>Login</Link>
+                                    <Link color={'blue.400'}>Login</Link>
                                 </Text>
                             </Stack>
                         </Stack>

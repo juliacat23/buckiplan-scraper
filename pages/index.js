@@ -33,7 +33,6 @@ const Home = () => {
                 >
                     {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                 </IconButton>
-                <CourseModal />
             </main>
 
             <footer className={styles.footer}>

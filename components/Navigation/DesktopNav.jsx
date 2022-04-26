@@ -1,5 +1,8 @@
 import React from 'react';
-import { Box, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Stack, useColorModeValue, Popover, PopoverTrigger, Link, PopoverContent} from '@chakra-ui/react';
+import NavItems from './NavItems';
+import DesktopSubNav from './DesktopSubNav'
+
 
 const DesktopNav = () => {
     const linkColor = useColorModeValue('gray.600', 'gray.200');
@@ -8,7 +11,7 @@ const DesktopNav = () => {
 
     return (
         <Stack direction={'row'} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (
+            {NavItems.map((navItem) => (
                 <Box key={navItem.label}>
                     <Popover trigger={'hover'} placement={'bottom-start'}>
                         <PopoverTrigger>

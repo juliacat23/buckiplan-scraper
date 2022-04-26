@@ -1,26 +1,6 @@
-import {
-    Box,
-    Flex,
-    Text,
-    IconButton,
-    Button,
-    Stack,
-    Collapse,
-    Icon,
-    Link,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    useColorModeValue,
-    useBreakpointValue,
-    useDisclosure,
-} from '@chakra-ui/react';
-import {
-    HamburgerIcon,
-    CloseIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { Stack, useColorModeValue } from '@chakra-ui/react';
+import NavItems from './NavItems';
+import MobileNavItem from './MobileNavItem';
 
 const MobileNav = () => {
     return (
@@ -29,7 +9,7 @@ const MobileNav = () => {
             p={4}
             display={{ md: 'none' }}
         >
-            {NAV_ITEMS.map((navItem) => (
+            {NavItems.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} />
             ))}
         </Stack>

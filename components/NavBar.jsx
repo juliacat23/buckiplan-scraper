@@ -12,12 +12,14 @@ import {
     useColorModeValue,
     useBreakpointValue,
     useDisclosure,
+    useColorMode
 } from '@chakra-ui/react';
 
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 
-export default function WithSubnavigation() {
+export default function NavBar() {
     const { isOpen, onToggle } = useDisclosure();
+    const { colorMode, toggleColorMode } = useColorMode();
     return (
         <Box>
             <Flex
@@ -96,6 +98,9 @@ export default function WithSubnavigation() {
                         }}
                     >
                         Sign Up
+                    </Button>
+                    <Button onClick={toggleColorMode}>
+                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                     </Button>
                 </Stack>
             </Flex>

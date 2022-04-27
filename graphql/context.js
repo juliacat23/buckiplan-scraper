@@ -1,7 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
+import prisma from '../lib/prisma'
 
-const prisma = new PrismaClient();
-
-export function createContext() {
-    return { prisma };
+export const Context = {
+  prisma: PrismaClient
+}
+export async function createContext({ req, res }) {
+  return {
+    prisma,
+  }
 }

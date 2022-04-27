@@ -1,31 +1,16 @@
-import { objectType, queryType, mutationType, makeSchema } from '@nexus/schema';
-import { nexusPrisma } from 'nexus-plugin-prisma';
-import path from 'path';
+import { gql } from 'apollo-server-micro';
 
-const Query = queryType({
-    definition(t) {
-        t.string('hello', { resolve: () => 'hello world' });
-    },
-});
+export const typeDefs = gql`
+    type Course {
+        uid: Int
+        course_id: Int
+        subject: String
+        course_name: String
+        course_title: String
+        units: Float
+    }
 
-export const schema = makeSchema({
-    types: [Query],
-    plugins: [nexusPrisma({ experimentalCRUD: true })],
-    outputs: {
-        typegen: path.join(process.cwd(), 'generated', 'nexus-typegen.ts'),
-        schema: path.join(process.cwd(), 'generated', 'schema.graphql'),
-    },
-    typegenAutoConfig: {
-        contextType: 'Context.Context',
-        sources: [
-            {
-                source: '@prisma/client',
-                alias: 'prisma',
-            },
-            {
-                source: path.join(process.cwd(), 'graphql', 'context.ts'),
-                alias: 'Context',
-            },
-        ],
-    },
-});
+    type Query {
+        courses: [Course]!
+    }
+`;

@@ -1,81 +1,116 @@
-import NextAuth from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
+import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '../../../lib/prisma';
-import nodemailer from 'nodemailer';
-import Handlebars from 'handlebars';
-import { readFileSync } from 'fs';
-import path from 'path';
 
-// Email sender
-const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_SERVER_HOST,
-    port: process.env.EMAIL_SERVER_PORT,
-    auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
-    },
-    secure: true,
-});
-
-const emailsDir = path.resolve(process.cwd(), 'emails');
-
-const sendVerificationRequest = ({ identifier, url }) => {
-    const emailFile = readFileSync(path.join(emailsDir, 'confirm-email.html'), {
-        encoding: 'utf8',
-    });
-    const emailTemplate = Handlebars.compile(emailFile);
-    transporter.sendMail({
-        from: `"✨ SupaVacation" ${process.env.EMAIL_FROM}`,
-        to: identifier,
-        subject: 'Your sign-in link for SupaVacation',
-        html: emailTemplate({
-            base_url: process.env.NEXTAUTH_URL,
-            signin_url: url,
-            email: identifier,
-        }),
-    });
-};
-
-const sendWelcomeEmail = async ({ user }) => {
-    const { email } = user;
-
-    try {
-        const emailFile = readFileSync(path.join(emailsDir, 'welcome.html'), {
-            encoding: 'utf8',
-        });
-        const emailTemplate = Handlebars.compile(emailFile);
-        await transporter.sendMail({
-            from: `"✨ SupaVacation" ${process.env.EMAIL_FROM}`,
-            to: email,
-            subject: 'Welcome to SupaVacation! 🎉',
-            html: emailTemplate({
-                base_url: process.env.NEXTAUTH_URL,
-                support_email: 'support@themodern.dev',
-            }),
-        });
-    } catch (error) {
-        console.log(`❌ Unable to send welcome email to user (${email})`);
-    }
-};
+import { verifyPassword, hashPassword } from '../../../auth/passwords';
+import prisma from '../../../lib/prisma';
 
 export default NextAuth({
+    adapter: PrismaAdapter(prisma),
+    secret: process.env.NEXT_PUBLIC_JWT_SECRET,
+    session: {
+        jwt: true,
+    },
     pages: {
-        signIn: '/',
-        signOut: '/',
-        error: '/',
-        verifyRequest: '/',
+        signIn: '/sign-in',
     },
     providers: [
-        EmailProvider({
-            maxAge: 10 * 60,
-            sendVerificationRequest,
+        CredentialsProvider({
+            id: 'buckiplan-login',
+            name: 'BuckiPlan Login',
+            credentials: {
+                email: {
+                    label: 'Email Address',
+                    type: 'email',
+                    placeholder: 'john.doe@example.com',
+                },
+                password: {
+                    label: 'Password',
+                    type: 'password',
+                    placeholder: 'Your super secure password',
+                },
+            },
+            async authorize(credentials) {
+                try {
+                    let maybeUser = await prisma.user.findFirst({
+                        where: {
+                            email: credentials.email,
+                        },
+                        select: {
+                            id: true,
+                            email: true,
+                            password: true,
+                            role: true,
+                        },
+                    });
+
+                    if (!maybeUser) {
+                        if (!credentials.password || !credentials.email) {
+                            throw new Error('Invalid Credentials');
+                        }
+
+                        maybeUser = await prisma.user.create({
+                            data: {
+                                email: credentials.email,
+                                password: await hashPassword(
+                                    credentials.password
+                                ),
+                            },
+                            select: {
+                                id: true,
+                                email: true,
+                                password: true,
+                                name: true,
+                                role: true,
+                            },
+                        });
+                    } else {
+                        const isValid = await verifyPassword(
+                            credentials.password,
+                            maybeUser.password
+                        );
+
+                        if (!isValid) {
+                            throw new Error('Invalid Credentials');
+                        }
+                    }
+                    return {
+                        id: maybeUser.id,
+                        email: maybeUser.email,
+                        name: maybeUser.name,
+                    };
+                } catch (error) {
+                    conline.log(error);
+                    throw error;
+                }
+            },
         }),
-        // GoogleProvider({
-        //     clientId: process.env.GOOGLE_ID,
-        //     clientSecret: process.env.GOOGLE_SECRET,
-        // }),
     ],
-    adapter: PrismaAdapter(prisma),
-    events: { createUser: sendWelcomeEmail },
+    callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            return true;
+        },
+        async redirect({ url, baseUrl }) {
+            return url.startsWith(baseUrl) ? url : baseUrl;
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            if (user) {
+                token.id = user.id;
+                token.role = user.role;
+            }
+
+            return token;
+        },
+        async session({ session, token, user }) {
+            const sess = {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.id,
+                },
+            };
+
+            return sess;
+        },
+    },
 });

@@ -20,7 +20,7 @@
         "@emotion/styled": "^11.8.1",
         "@hookform/resolvers": "^2.8.8",
         "@next-auth/prisma-adapter": "^1.0.1",
-        "@prisma/client": "^2.23.0",
+        "@prisma/client": "^3.13.0",
         "@supabase/supabase-js": "^1.35.2",
         "@supabase/ui": "^0.36.5",
         "apollo-server-micro": "^3.6.7",

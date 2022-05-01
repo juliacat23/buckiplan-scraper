@@ -8,6 +8,10 @@
         "start": "next start",
         "lint": "next lint",
         "seed": "node prisma/seed.js",
+        "compile:scss": "node-sass --importer node_modules/node-sass-package-importer/dist/cli.js assets/scss/dashboard.scss assets/css/dashboard.css",
+        "minify:scss": "node-sass --importer node_modules/node-sass-package-importer/dist/cli.js assets/scss/dashboard.scss assets/css/dashboard.min.css --output-style compressed",
+        "map:scss": "node-sass --importer node_modules/node-sass-package-importer/dist/cli.js assets/scss/dashboard.scss assets/css/dashboard.css --source-map true",
+        "build:scss": "npm run compile:scss && npm run minify:scss && npm run map:scss",
         "cypress": "cypress open",
         "e2e": "start-server-and-test start http://localhost:3000 cypress",
         "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"

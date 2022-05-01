@@ -20,10 +20,9 @@ model User {
 }
 
 model Course {
-  uid              Int     @id @default(autoincrement())
-  course_id        Int
+  id               Int     @id @default(autoincrement())
   subject          String
-  course_name      String
+  course_name      String  @unique
   course_title     String
   units            Float
   academic_group   String?

@@ -1,8 +1,8 @@
 // need to use CommonJS syntax instead of ECMAScript module syntax
 const { PrismaClient } = require('@prisma/client');
-const { courses } = require('./seeds/courses.js');
-const { userData } = require('./seeds/users');
-
+const Courses = require('./seeds/courses.js');
+// const { userData } = require('./seeds/users');
+console.log(Courses);
 const prisma = new PrismaClient();
 
 const load = async () => {
@@ -10,18 +10,18 @@ const load = async () => {
         await prisma.course.deleteMany();
         console.log('Deleted records in course table');
 
-        await prisma.user.deleteMany();
-        console.log('Deleted records in user table');
+        // await prisma.user.deleteMany();
+        // console.log('Deleted records in user table');
 
         await prisma.course.createMany({
-            data: courses,
+            data: Courses,
         });
         console.log('Added course data');
 
-        await prisma.user.createMany({
-            data: userData,
-        });
-        console.log('Added user data');
+        // await prisma.user.createMany({
+        //     data: userData,
+        // });
+        // console.log('Added user data');
     } catch (e) {
         console.error(e);
         process.exit(1);

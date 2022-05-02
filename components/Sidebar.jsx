@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import SidebarModal from './Sidebar/SidebarModal';
 import { FiUser, FiInfo, FiGithub, FiLogOut, FiMenu } from 'react-icons/fi';
 import {
     IconButton,
@@ -12,15 +13,13 @@ import {
     DrawerContent,
     Text,
     useDisclosure,
-    BoxProps,
-    FlexProps,
 } from '@chakra-ui/react';
 
 const LinkItems = [
-    { name: 'Profile', icon: FiUser },
-    { name: 'About', icon: FiInfo },
-    { name: 'Source Code', icon: FiGithub },
-    { name: 'Log Out', icon: FiLogOut },
+    { name: 'Profile', icon: FiUser, href: '/profile' },
+    { name: 'About', icon: FiInfo, href: '/about' },
+    { name: 'Source Code', icon: FiGithub, href: 'https://github.com/juliacat23/buckiplan' },
+    { name: 'Log Out', icon: FiLogOut, href: '/logout' },
 ];
 
 export default function Sidebar({ children }) {
@@ -54,6 +53,7 @@ export default function Sidebar({ children }) {
 }
 
 const SidebarContent = ({ onClose, ...rest }) => {
+    const [modalData, setModalData] = useState(null);
     return (
         <Box
             bg={useColorModeValue('white', 'gray.900')}
@@ -79,7 +79,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
                 />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
+                <NavItem key={link.name} icon={link.icon} href={link.href}>
                     {link.name}
                 </NavItem>
             ))}
@@ -87,10 +87,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
     );
 };
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, href, children, ...rest }) => {
     return (
         <Link
-            href="#"
+            href={href}
             style={{ textDecoration: 'none' }}
             _focus={{ boxShadow: 'none' }}
         >

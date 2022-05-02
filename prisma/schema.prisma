@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,14 +24,6 @@ model Course {
   terms            String
   course_attribute String?
   attribute_type   String?
-  slug             String
+  slugID           String
 
-}
-
-model User {
-  email     String  @unique
-  id        Int     @id @default(autoincrement())
-  firstName String?
-  lastName  String?
-  password  String
 }

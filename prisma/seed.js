@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const { courses } = require('./seeds/courses');
+const Courses = require('./seeds/courses');
 
 const load = async () => {
     try {
@@ -9,7 +9,7 @@ const load = async () => {
         console.log('Deleted records in course table');
 
         await prisma.course.createMany({
-            data: courses,
+            data: Courses,
         });
         console.log('Added course data');
     } catch (e) {

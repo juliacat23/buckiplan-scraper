@@ -24,6 +24,6 @@ model Course {
   terms            String
   course_attribute String?
   attribute_type   String?
-  slugID           String
+  slugID           String  @unique
 
 }

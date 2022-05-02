@@ -1,10 +1,10 @@
 import prisma from '../../../lib/prisma';
 
 export default async function handle(req, res) {
-    const id = req.query.id;
+    const slugID = req.query.slugID;
 
     if (req.method === 'GET') {
-        handleGET(id, res);
+        handleGET(slugID, res);
     } else {
         throw new Error(
             `The HTTP ${req.method} method is not supported at this route.`
@@ -14,9 +14,9 @@ export default async function handle(req, res) {
 
 // GET /api/course/:id
 
-async function handleGET(id, res) {
+async function handleGET(slugID, res) {
     const course = await prisma.course.findUnique({
-        where: { id: Number(id) },
+        where: { slugID: String(slugID) },
     });
     res.json(course);
 }

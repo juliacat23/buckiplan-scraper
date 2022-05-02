@@ -9,6 +9,7 @@ datasource db {
 
 model Course {
   id               Int     @id @default(autoincrement())
+  slug             String  @unique
   subject          String
   course_name      String  @unique
   course_title     String
@@ -21,8 +22,6 @@ model Course {
   terms            String
   course_attribute String?
   attribute_type   String?
-  slug             String
-
 }
 
 model User {

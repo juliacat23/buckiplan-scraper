@@ -13,6 +13,7 @@ datasource db {
 model Course {
   id               Int     @id @default(autoincrement())
   subject          String
+  catalog_number   String?
   course_name      String  @unique
   course_title     String
   units            Float
@@ -25,5 +26,4 @@ model Course {
   course_attribute String?
   attribute_type   String?
   slugID           String  @unique
-
 }

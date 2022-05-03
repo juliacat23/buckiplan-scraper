@@ -91,6 +91,7 @@ def getCourses(subjects: list):
                                 {
                                     "subject": subject,
                                     "course_id": course_id,
+                                    "catalog_number": catalog_number,
                                     "course_name": course_name,
                                     "course_title": course_title,
                                     "units": units,

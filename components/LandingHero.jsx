@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import {
     Box,
     Heading,
@@ -16,13 +17,10 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure
+    useDisclosure,
 } from '@chakra-ui/react';
 
-
-
 export default function Hero() {
-    const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure()
     return (
         <>
             <Head>
@@ -44,13 +42,19 @@ export default function Hero() {
                         fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
                         lineHeight={'110%'}
                     >
-                        Schedule Smarter with   <br />
+                        Schedule Smarter with <br />
                         <Text as={'span'} color={''}>
-                        Bucki<Text as={'i'}color={'scarlet.500'}>Plan</Text>
+                            Bucki
+                            <Text as={'i'} color={'scarlet.500'}>
+                                Plan
+                            </Text>
                         </Text>
                     </Heading>
                     <Text color={'gray.800'}>
-                        Introducting the smarter way to plan courses at Ohio State. BuckiPlan's easy to use drag and drop format allows you to plan courses multiple semesters in advance to ensure you never miss a requirement.
+                        Introducting the smarter way to plan courses at Ohio
+                        State. BuckiPlan's easy to use drag and drop format
+                        allows you to plan courses multiple semesters in advance
+                        to ensure you never miss a requirement.
                     </Text>
                     <Stack
                         direction={'column'}
@@ -59,19 +63,20 @@ export default function Hero() {
                         alignSelf={'center'}
                         position={'relative'}
                     >
-                        <Button
-                            colorScheme={'scarlet'}
-                            bg={'scarlet.500'}
-                            rounded={'full'}
-                            onClick={onEditOpen}
-                            px={6}
-                            _hover={{
-                                bg: 'scarlet.600',
-                            }}
-                        >
-                            Get Started
-                        </Button>
-                
+                        <Link href="/profile">
+                            <Button
+                                colorScheme={'scarlet'}
+                                bg={'scarlet.500'}
+                                rounded={'full'}
+                                px={6}
+                                _hover={{
+                                    bg: 'scarlet.600',
+                                }}
+                            >
+                                Get Started
+                            </Button>
+                        </Link>
+
                         <Button
                             variant={'link'}
                             colorScheme={'blue'}

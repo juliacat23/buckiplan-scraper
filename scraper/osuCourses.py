@@ -8,62 +8,58 @@ and export to CSV file
 
 import tqdm
 import requests
-
+import warnings
 import pandas as pd
 
-from catalogParse import getSubjects
+from catalogParse import getSubjects, getTerms
 from utils.helpers import checkPages
+
 
 from colorama import init, Fore
 
 # Cross-platform colored terminal text
 init(autoreset=True)
 
-courses_url = "https://content.osu.edu/v2/classes/search?q={}&campus=COL"
-page = 1  # TODO: fix hard-code
+warnings.filterwarnings("ignore")  # surpress warnings
 
 
-def getCourses(subjects: list):
-    # tqdm status message logging
-    # code adapted from https://gist.github.com/phillies/4e44d2df02aeda9563991d0c7a0c411d#file-tqdm_log-py
-    subject_log = tqdm.tqdm(
-        total=0, position=1, bar_format="{desc}"
-    )  # prevents duplicate progress bar
+def getCourses(subjects: list, terms: list):
+    term_log = tqdm.tqdm(total=0, position=1, bar_format="{desc}")
+    subject_log = tqdm.tqdm(total=0, position=2, bar_format="{desc}")
 
-    courses = []  # empty list to write course info to
+    courses = []
+    for term in terms:
+        term_log.set_description_str(f"Current Term: {term}")
 
-    for subject in tqdm.tqdm(subjects):
-        subject_log.set_description_str(f"Current Subject: {subject}")
-
-        url = courses_url.format(
-            subject
-        )  # i.e. https://content.osu.edu/v2/classes/search?q=art&campus=COL
-
-        response = requests.get(url)
-        res = response.json()
-        totalPages = checkPages(res)
-
-        if totalPages < page:
-            pass
-
-        for p in range(totalPages):
-            url = f"https://content.osu.edu/v2/classes/search?q={subject}&campus=COL&p={p}"
+        for subject in tqdm.tqdm(subjects):
+            subject_log.set_description_str(f"Current Subject: {subject}")
+            url = f"https://content.osu.edu/v2/classes/search?q={subject}&campus=COL&p=1&term={term}"
             response = requests.get(url)
             res = response.json()
-            try:
-                data = res["data"]["courses"]
-                for i in range(len(data)):
-                    if "title" in data[i]["course"]:
-                        subject = data[i]["course"]["subject"]
-                        course_id = data[i]["course"]["courseId"]
-                        catalog_number = data[i]["course"]["catalogNumber"]
-                        course_name = subject + " " + catalog_number
-                        course_title = data[i]["course"]["title"]
-                        units = data[i]["course"]["minUnits"]
-                        academic_career = data[i]["course"]["academicCareer"]
-                        description = data[i]["course"]["description"]
-                        cross_list = data[i]["course"]["equivalentId"]
-                        multi_enroll = data[i]["course"]["allowMultiEnroll"]
+            totalPages = checkPages(res)
+            page = 1
+
+            if totalPages < page:
+                pass
+
+            for p in range(totalPages):
+                url = f"https://content.osu.edu/v2/classes/search?q={subject}&campus=COL&p={p}&term={term}"
+                response = requests.get(url)
+                res = response.json()
+                try:
+                    data = res["data"]["courses"]
+                    for i in range(len(data)):
+                        if "title" in data[i]["course"]:
+                            subject = data[i]["course"]["subject"]
+                            course_id = data[i]["course"]["courseId"]
+                            catalog_number = data[i]["course"]["catalogNumber"]
+                            course_name = subject + " " + catalog_number
+                            course_title = data[i]["course"]["title"]
+                            units = data[i]["course"]["minUnits"]
+                            academic_career = data[i]["course"]["academicCareer"]
+                            description = data[i]["course"]["description"]
+                            cross_list = data[i]["course"]["equivalentId"]
+                            multi_enroll = data[i]["course"]["allowMultiEnroll"]
                         try:
                             academic_group = data[i]["course"]["academicGroup"]
                         except:
@@ -104,11 +100,10 @@ def getCourses(subjects: list):
                                     "attribute_type": attribute_type,
                                 }
                             )
-
-                    else:
-                        pass
-            except:
-                pass
+                        else:
+                            pass
+                except:
+                    pass
 
     return courses
 

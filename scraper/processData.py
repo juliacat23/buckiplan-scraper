@@ -111,7 +111,7 @@ coursesWithAttrs = coursesWithAttrs.replace({'multi_enroll': {'Y': True, 'N': Fa
 sorted_df = coursesWithAttrs.sort_values(by=['course_name'], ascending=True)
 sorted_df = sorted_df.drop(columns=['course_id'])
 
-sorted_df['slug'] = sorted_df['course_name'].apply(lambda x :slugify(x))
+sorted_df['slugID'] = sorted_df['course_name'].apply(lambda x :slugify(x))
 
 sorted_df.to_csv("data/coursesWithSemesters.csv", index=False)
 

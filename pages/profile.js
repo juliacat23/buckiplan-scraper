@@ -15,11 +15,18 @@ import {
     Select,
 } from '@chakra-ui/react';
 
-import { useState } from 'react';
+import { MajorLookup } from '../components/Profile/MajorLookup';
+import { useState, useMemo } from 'react';
 
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
 export default function Profile() {
+    const [dataValue, setDataValue] = useState('def');
+    const options = useMemo(() => MajorLookup[dataValue], [dataValue]);
+
+    const onChange = ({ target: { value } }) => {
+        setDataValue(value);
+    };
     return (
         <Flex
             minH={'100vh'}
@@ -63,6 +70,42 @@ export default function Profile() {
                 </FormControl>
                 <FormControl id="college" isRequired>
                     <FormLabel>Your College</FormLabel>
+                    <Select onChange={onChange}>
+                        <option value="def">Choose your college</option>
+                        <option value="Architecture">Architecture</option>
+                        <option value="ASC">Arts and Sciences</option>
+                        <option value="Business">Business</option>
+                        <option value="Denistry">Denistry</option>
+                        <option value="EHE">Education and Human Ecology</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="ENR">
+                            Environmental and Natural Resources
+                        </option>
+                        <option value="FAES">
+                            Food, Agricultural and Environmental Sciences
+                        </option>
+                        <option value="HRS">
+                            Health and Rehabilitation Sciences
+                        </option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Nursing">Nursing</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                        <option value="PUA">Public Affairs</option>
+                        <option value="PHL">Public Health</option>
+                        <option value="SKW">Social Work</option>
+                    </Select>
+                </FormControl>
+                <FormControl id="major" isRequired>
+                    <FormLabel>Your Major</FormLabel>
+                    <Select disabled={dataValue === 'def'}>
+                        {[...MajorLookup.def, ...options].map(
+                            ({ id, text }) => (
+                                <option key={id} value={id}>
+                                    {text}
+                                </option>
+                            )
+                        )}
+                    </Select>
                 </FormControl>
                 <FormControl id="email" isRequired>
                     <FormLabel>Email address</FormLabel>

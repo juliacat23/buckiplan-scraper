@@ -27,3 +27,8 @@ model Course {
   attribute_type   String?
   slugID           String  @unique
 }
+
+model User {
+  id        Int    @id @default(autoincrement())
+  firstName String
+}

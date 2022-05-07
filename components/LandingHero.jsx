@@ -63,7 +63,7 @@ export default function Hero() {
                         alignSelf={'center'}
                         position={'relative'}
                     >
-                        <Link href="/profile">
+                        <Link href="/api/auth/signin">
                             <Button
                                 colorScheme={'scarlet'}
                                 bg={'scarlet.500'}

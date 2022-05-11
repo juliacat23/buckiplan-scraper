@@ -1,5 +1,10 @@
 <template>
   <div>
+    <transition name="fade">
+      <div v-if="performingRequest" class="loading">
+        <p>Loading...</p>
+      </div>
+    </transition>
      
     <div class="landing top-sec">
       <!--PLAN AHEAD-->
@@ -434,3 +439,9 @@ html {
   margin: 0;
 }
 </style>
+
+<script lang="ts">
+type Data = {
+  performingRequest: boolean;
+}
+</script>

@@ -3,6 +3,8 @@ import pandas as pd
 
 from slugify import slugify
 
+import json
+
 """
 Process and clean data parsed from the OSU course 
 catalog and schedule API 
@@ -109,10 +111,19 @@ coursesWithAttrs["course_attribute"] = coursesWithAttrs["course_attribute"].repl
 
 coursesWithAttrs = coursesWithAttrs.replace({'multi_enroll': {'Y': True, 'N': False}})
 sorted_df = coursesWithAttrs.sort_values(by=['course_name'], ascending=True)
-sorted_df = sorted_df.drop(columns=['course_id'])
+
+sorted_df = sorted_df.drop(columns=['attribute_type'])
+sorted_df = sorted_df.drop(columns=['cross_list'])
+sorted_df = sorted_df.rename(columns={'course_id': 'pk'})
 
 sorted_df['slugID'] = sorted_df['course_name'].apply(lambda x :slugify(x))
+sorted_df['model'] = 'api.course'
 
+sorted_df['fields'] = sorted_df.apply(lambda x: {"subject": x.subject, "catNumber": x.catalog_number, "name": x.course_name, "title": x.course_title, "units": x.units, "acadGroup": x.academic_group, "acadCareer": x.academic_career, "description": x.description, "multi_enroll": x.multi_enroll, "slug": x.slugID, "termsOffered": x.terms, "attributes": x.course_attribute}, axis=1)
 sorted_df.to_csv("data/coursesWithSemesters.csv", index=False)
 
-sorted_df.to_json('data/courses.json', orient='records')
+dictionary = sorted_df[["pk", "model", "fields"]].to_dict(orient="records")
+courses = json.dumps(dictionary, indent=4)
+
+with open("data/courses.json", "w") as outfile:
+    outfile.write(courses)

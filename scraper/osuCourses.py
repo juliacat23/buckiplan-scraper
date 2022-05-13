@@ -116,7 +116,7 @@ def saveCourses():
         ), terms=getTerms(
             driver_path="/Users/julia/Projects/buckiplan/scraper/chromedriver",
             url="https://courses.osu.edu/psp/csosuct/EMPLOYEE/PUB/c/COMMUNITY_ACCESS.CLASS_SEARCH.GBL?",
-        )
+        ) 
     )
     df = pd.DataFrame(courses)
 

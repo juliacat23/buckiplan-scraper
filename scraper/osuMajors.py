@@ -48,6 +48,7 @@ def getMajors(driver_path, url):
     # action.move_to_element(filterExpand).perform()
     
     names_list = []
+    description_list=[]
     degrees_list = []
     colleges_list = []
     
@@ -55,6 +56,10 @@ def getMajors(driver_path, url):
     names = driver.find_elements(By.CSS_SELECTOR, "p.title")
     for name in names:
         names_list.append(name.text)
+    
+    descriptions = driver.find_elements(By.CSS_SELECTOR, "p.preview")
+    for desc in descriptions:
+        description_list.append(desc.text)
 
     degrees = driver.find_elements(By.CSS_SELECTOR, "p.degree")
     for degree in degrees:
@@ -63,24 +68,13 @@ def getMajors(driver_path, url):
     colleges = driver.find_elements(By.CSS_SELECTOR, "p.school")
     for college in colleges:
         colleges_list.append(college.text)
-    
+
+
     df = pd.DataFrame()
-    text_len = len(names_list) + 1
-    id = pd.Series(range(1,text_len))
-    df['pk'] = id
-    df['model'] = 'api.major'
     df['major_name'] = names_list
-    df['degrees'] = degrees_list
-    df['college'] = colleges_list
+    df['description'] = description_list
 
-    df["fields"] = df.apply(lambda x: {"name": x.major_name, "degrees": x.degrees, "college": x.college}, axis=1)
-    print(df["fields"])
-
-    dictionary = df[["pk", "model", "fields"]].to_dict(orient="records")
-    majors = json.dumps(dictionary, indent=4)
-
-    with open("data/majors.json", "w") as outfile:
-        outfile.write(majors)
+    df.to_json('data/majors.json', orient='records')
 
 getMajors(driver_path="/Users/julia/Projects/buckiplan/scraper/chromedriver", url='http://undergrad.osu.edu/majors-and-academics/majors')
 
